@@ -16,6 +16,11 @@ extern controller Controller1;
 extern pneumatics fClaw;
 extern pneumatics bClaw;
 
+// Sensors
+
+extern digital_in bClawSwitch;
+extern analog_in bClawOptical;
+
 // Drive motors
 
 extern motor lF;

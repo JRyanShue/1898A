@@ -15,6 +15,8 @@ void vexcodeInit(void) {
 
 pneumatics fClaw = pneumatics(Brain.ThreeWirePort.A);
 pneumatics bClaw = pneumatics(Brain.ThreeWirePort.B);
+digital_in bClawSwitch = digital_in(Brain.ThreeWirePort.C);
+analog_in bClawOptical = analog_in(Brain.ThreeWirePort.D);
 
 // Controller
 

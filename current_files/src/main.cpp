@@ -18,10 +18,6 @@ void pre_auton(void) {
 
 }
 
-void autonomous(void) {
-
-}
-
 // Spin intake x amount
 void Intake(int value) {
 
@@ -33,6 +29,23 @@ void Intake(int value) {
 void Lift(int value) {
 
   lift.spin(vex::directionType::fwd, value, vex::velocityUnits::pct);
+
+}
+
+void bClawClamp() {
+
+  bClawSet = true;
+
+}
+
+// Automatically set claws based on sensors
+void automaticActuation() {
+
+  if (bClawSwitch.value() == 0 && bClawOptical.value(percent) < 70) {
+
+    bClawSet = true;
+    
+  }
 
 }
 
@@ -53,6 +66,97 @@ void setClaws() {
 
 }
 
+// Straight drive movement
+void straight(float dist, float speed=0.5) {
+
+
+
+}
+
+// Turning drive movement (turn in place)
+void turn(float angle, float speed=0.5) {
+
+
+
+}
+
+void fc_flip() {
+
+  fClawSet = !fClawSet;
+  setClaws();
+
+}
+
+void bc_flip() {
+
+  bClawSet = !bClawSet;
+  setClaws();
+
+}
+
+void auton_sequence() {
+
+  // Drive backwards, grab red mogo, drive forwards
+  straight(-50);
+  bc_flip();
+  straight(50);
+
+  // Turn right, push yellow mogo into scoring zone
+  turn(90);
+  straight(800);
+
+  // Turn left, drop red mogo, push middle yellow mogo into scoring zone
+  turn(-120);
+  bc_flip();
+  straight(800);
+
+  // Turn right, go backwards and grab red mogo, turn right
+  turn(90);
+  straight(-400);
+  bc_flip();
+  turn(90);
+
+  // Push yellow mogo into zone, turn left, drive backwards, release mogo
+  straight(800);
+  turn(-70);
+  straight(-500);
+  bc_flip();
+
+  // Turn right, go forward and grab blue mogo, drive backwards, turn left
+  
+
+}
+
+void autonomous(void) {
+
+  // Test PID Loop
+  float kP = 0.7;
+  float kI = 0.2;
+  float kD = 1.5;
+
+  // Default starting
+  fClawSet = false;
+  bClawSet = false;
+  Intake(100);
+
+  // lift.resetRotation();
+  int lOrigin = lift.position(deg);
+  int lPos = lift.position(deg) - lOrigin;
+  int i;
+  char buffer[33];
+  while (lPos < 5) {
+
+    Brain.Screen.printAt(3, 30, "YO");
+    lPos = lift.position(deg) - lOrigin;
+    Intake(-500);
+
+  }
+
+  // Auton
+  auton_sequence();
+
+}
+
 void usercontrol(void) {
 
   // Wait time between cycles of the main loop (ms)
@@ -66,6 +170,9 @@ void usercontrol(void) {
   // Cooldowns for pistons so that they don't oscillate back and forth when pressed
 	int fCoolDown = 0;
 	int bCoolDown = 0;
+
+  fClawSet = false;
+  bClawSet = true;
 
   // Must actuation button disabled for this amount of time after pressing
   // Makes it so that the piston doesn't shoot back and forth in the time of pressing the button
@@ -127,6 +234,9 @@ void usercontrol(void) {
 			bClawSet = !bClawSet;
 			bCoolDown = 0;
 		}
+
+    // Automatic actuation with sensors
+    automaticActuation();
 
     // Physically actuate claws based on determined values
 		setClaws();    
