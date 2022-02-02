@@ -49,6 +49,22 @@ void automaticActuation() {
 
 }
 
+// Reset Encoders
+void resetDrive() {
+
+  leftD.resetRotation();
+  rightD.resetRotation();
+
+}
+
+// Stop Drive
+void stopDrive() {
+
+  leftD.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
+
+}
+
 // Set front and back claws
 void setClaws() {
 
@@ -67,16 +83,77 @@ void setClaws() {
 }
 
 // Straight drive movement
-void straight(float dist, float speed=0.5) {
+void straight(float dist, float speed=50.0) {
 
+  // 50 units is one revolution
+  float revs = (static_cast<float>(dist)) / 50.0;
 
+  bool reverse = dist < 0;
 
+  resetDrive();
+  
+  if (reverse) {
+    while (leftD.rotation(rotationUnits::rev) > revs || rightD.rotation(rotationUnits::rev) > revs) {
+      if (leftD.rotation(rotationUnits::rev) > revs) {
+        leftD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+      }
+      if (rightD.rotation(rotationUnits::rev) > revs) {
+        rightD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+      }
+    }
+  } else {
+    while (leftD.rotation(rotationUnits::rev) < revs || rightD.rotation(rotationUnits::rev) < revs) {
+      if (leftD.rotation(rotationUnits::rev) < revs) {
+        leftD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+      }
+      if (rightD.rotation(rotationUnits::rev) < revs) {
+        rightD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+      }
+    }
+  }
+
+  //
+  stopDrive();
+  wait(0.1, sec);
+  
 }
 
 // Turning drive movement (turn in place)
-void turn(float angle, float speed=0.5) {
+void turn(float angle, float speed=50.0) {
 
+  // TUNE TURN AMOUNT: HIGHER VALUE IS SHORTER TURN
+  float tuneVal = 145.0;
 
+  float revs = (static_cast<float>(angle)) / tuneVal;
+
+  bool reverse = angle < 0;
+  // int error;
+
+  resetDrive();
+
+  if (reverse) {
+    while (leftD.rotation(rotationUnits::rev) > revs || rightD.rotation(rotationUnits::rev) < -revs) {
+      if (leftD.rotation(rotationUnits::rev) > revs) {
+        leftD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+      }
+      if (rightD.rotation(rotationUnits::rev) < -revs) {
+        rightD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+      }
+    }
+  } else {
+    while (leftD.rotation(rotationUnits::rev) < revs || rightD.rotation(rotationUnits::rev) > -revs) {
+      if (leftD.rotation(rotationUnits::rev) < revs) {
+        leftD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+      }
+      if (rightD.rotation(rotationUnits::rev) > -revs) {
+        rightD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+      }
+    }
+  }
+
+  //
+  stopDrive();
+  wait(0.1, sec);
 
 }
 
@@ -97,16 +174,17 @@ void bc_flip() {
 void auton_sequence() {
 
   // Drive backwards, grab red mogo, drive forwards
-  straight(-50);
-  bc_flip();
-  straight(50);
+  Intake(0);  // Intake at speed 0/100
+  straight(-50);  // Move backwards (negative) for 50 units, or 1 revolution. In reality, will go much further, so just use this as an approximation
+  bc_flip();  // "bc" is the claw that sits stationary. This function flips the claw to the other orientation (will close if open, open if closed)
+  straight(50);  // Move straight forwards (positive) for 50 units
 
   // Turn right, push yellow mogo into scoring zone
-  turn(90);
-  straight(800);
+  turn(90);  // Turn right (positive) for 90 degrees. 90 degrees should be a right turn; tune the value in the function above (noted w/ comment) to change turn amount
+  straight(50);
 
   // Turn left, drop red mogo, push middle yellow mogo into scoring zone
-  turn(-120);
+  turn(-120);  // Turn left (negative)
   bc_flip();
   straight(800);
 
@@ -127,33 +205,52 @@ void auton_sequence() {
 
 }
 
+void holdDrive(void) {
+
+  lF.setBrake(brakeType::hold);
+  lM.setBrake(brakeType::hold);
+  lB.setBrake(brakeType::hold);
+  rF.setBrake(brakeType::hold);
+  rM.setBrake(brakeType::hold);
+  rB.setBrake(brakeType::hold);
+
+}
+
 void autonomous(void) {
 
   // Test PID Loop
-  float kP = 0.7;
-  float kI = 0.2;
-  float kD = 1.5;
+  // float kP = 0.7;
+  // float kI = 0.2;
+  // float kD = 1.5;
 
-  // Default starting
-  fClawSet = false;
-  bClawSet = false;
-  Intake(100);
+  // // Default starting
+  // fClawSet = false;
+  // bClawSet = false;
+  // Intake(100);
 
-  // lift.resetRotation();
-  int lOrigin = lift.position(deg);
-  int lPos = lift.position(deg) - lOrigin;
-  int i;
-  char buffer[33];
-  while (lPos < 5) {
+  // // lift.resetRotation();
+  // int lOrigin = lift.position(deg);
+  // int lPos = lift.position(deg) - lOrigin;
+  // int i;
+  // char buffer[33];
+  // while (lPos < 5) {
 
-    Brain.Screen.printAt(3, 30, "YO");
-    lPos = lift.position(deg) - lOrigin;
-    Intake(-500);
+  //   Brain.Screen.printAt(3, 30, "YO");
+  //   lPos = lift.position(deg) - lOrigin;
+  //   Intake(-500);
 
-  }
+  // }
+
+  // 
+  holdDrive();
 
   // Auton
-  auton_sequence();
+  // auton_sequence();
+  turn(90);
+  turn(-90);
+  turn(180);
+  turn(-180);
+  turn(360);
 
 }
 
