@@ -184,7 +184,7 @@ void matchauton_pos2(){
   bc_flip();
   fc_flip();
 }
-void autonskills(){
+void autonskills80pnts(){
   Intake(66.7); 
   straight(300); 
   turn(25);
@@ -270,7 +270,7 @@ void autonomous(void) {
   holdDrive();
 
   // Auton
-  autonskills();
+  autonskills80pnts();
   //matchauton_pos1();
  // matchauton_pos2();
   //auton_sequence();
