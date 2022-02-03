@@ -186,6 +186,10 @@ void matchauton_pos2(){
 }
 void autonskills80pnts(){
   Intake(66.7); 
+  Lift(33);
+  wait(3,sec);
+  Lift(0);
+  wait(1,sec);
   straight(300); 
   turn(25);
   straight(-250);
@@ -193,6 +197,37 @@ void autonskills80pnts(){
   straight(200);
   turn(-100);
   straight(200);
+  straight(-40);
+  turn(60);
+  straight(80,40.0); //into the wall
+  wait(1,sec);
+  turn(91);
+  wait(1,sec);
+  straight(80, 20.0);
+  Lift(-33);
+  wait(3,sec);
+  Lift(-1);
+  straight(70,20);
+  wait(1,sec);
+  bc_flip();
+  Lift(0);
+  straight(-300);
+  // fc_flip();
+  // turn(70);
+  // Lift(-1);
+  // straight(30,10);
+  // bc_flip();
+  // turn(-90);
+  // straight(300);
+  // straight(-50,10);
+
+
+  // bc_flip();
+  // straight(-50,30);
+  // wait(1,sec);
+  // turn(-90);
+  // straight(-10,10);
+  // bc_flip();
 
 
 }
