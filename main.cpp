@@ -177,7 +177,25 @@ void matchauton_pos1(){
   Intake(66.7);
 
 }
+void matchauton_pos2(){
+  Intake(66.7);
+  straight(-10);
+  turn(0);
+  bc_flip();
+  fc_flip();
+}
+void autonskills(){
+  Intake(66.7); 
+  straight(300); 
+  turn(25);
+  straight(-250);
+  turn(-45);
+  straight(200);
+  turn(-100);
+  straight(200);
 
+
+}
 void auton_sequence() {
 
   // Drive backwards, grab red mogo, drive forwards
@@ -252,7 +270,9 @@ void autonomous(void) {
   holdDrive();
 
   // Auton
-  matchauton_pos1();
+  autonskills();
+  //matchauton_pos1();
+ // matchauton_pos2();
   //auton_sequence();
   // turn(90);
   // turn(-90);
