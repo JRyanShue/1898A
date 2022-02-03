@@ -196,6 +196,8 @@ void autonskills80pnts(){
 
 
 }
+
+
 void auton_sequence() {
 
   // Drive backwards, grab red mogo, drive forwards
@@ -268,7 +270,7 @@ void autonomous(void) {
 
   // 
   holdDrive();
-
+ 
   // Auton
   autonskills80pnts();
   //matchauton_pos1();
