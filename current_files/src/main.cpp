@@ -359,7 +359,7 @@ void usercontrol(void) {
 			intakeOn = !intakeOn;
 		}
 		if (intakeOn) {
-			Intake(100);
+			Intake(66.7); //changed from 100 to 66.7
 		} else {
 			Intake(0);
 		}
