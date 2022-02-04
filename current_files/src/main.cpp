@@ -171,18 +171,76 @@ void bc_flip() {
 
 }
  
+void elimpos2(){
+Intake(66.7);
+straight(120);
+straight(40,30);
+wait(0.25,sec);
+fc_flip(); //could be bc could be fc test to find out
+wait(0.25,sec);
+turn(-90); //adjust once first distence is set
+Lift(-1);
+straight(-50);
+straight(-40,30);
+wait(0.5,sec);
+bc_flip(); //play arround to test
+wait(0.5,sec);
+Lift(0);
+turn(90);
+straight(200);
+
+
+}
+void elimpos1(){
+Intake(66.7);
+straight(120);
+straight(40,30);
+wait(0.25,sec);
+fc_flip(); //could be bc could be fc test to find out
+wait(0.25,sec);
+turn(90); //adjust once first distence is set
+Lift(-1);
+straight(-50);
+straight(-40,30);
+wait(0.5,sec);
+bc_flip(); //play arround to test
+wait(0.5,sec);
+Lift(0);
+turn(-90);
+straight(200);
+
+//70 is arround 1 cube
+
+}
 void matchauton_pos1(){
-  straight(-100);
-  bc_flip();
+  straight(-100,30);
+  bc_flip(); //might be fc might be bc
   Intake(66.7);
 
 }
 void matchauton_pos2(){
   Intake(66.7);
-  straight(-10);
-  turn(0);
-  bc_flip();
+  wait(2,sec);
+  //only do next part if you have time to test
+  turn(-90);
+  straight(-210,30);
+  wait(1,sec);
   fc_flip();
+  wait(0.5,sec);
+  //IF and only If you really get to test it you can try and get two of the yellows, un comment the code as a starting point
+  // Lift(-1);
+  // turn(-90);
+  // straight(85,30);
+  // wait(0.5,sec);
+  // fc_flip(); //might be bc might be fc since its fucky, going to have to test to find out
+  // wait(0.5,sec);
+  //Lift(0);
+  // turn(90);
+  
+
+
+  straight(150);
+
 }
 void autonskills80pnts(){
   Intake(66.7); 
@@ -307,9 +365,11 @@ void autonomous(void) {
   holdDrive();
  
   // Auton
-  autonskills80pnts();
+    autonskills80pnts();
   //matchauton_pos1();
  // matchauton_pos2();
+  //elimpos1();
+  //elimpos2()
   //auton_sequence();
   // turn(90);
   // turn(-90);
