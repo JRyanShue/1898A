@@ -11,10 +11,32 @@ competition Competition;
 bool fClawSet = true;
 bool bClawSet = true;
 
+// Set front and back claws
+void setClaws() {
+
+  if (fClawSet) {
+    fClaw.open();
+  } else {
+    fClaw.close();
+  }
+
+  if (bClawSet) {
+    bClaw.open();
+  } else {
+    bClaw.close();
+  }
+
+}
+
 void pre_auton(void) {
 
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+
+  // Set both claws to down pos
+  fClawSet = true;
+  bClawSet = true;
+  setClaws();
 
 }
 
@@ -62,23 +84,6 @@ void stopDrive() {
 
   leftD.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
   rightD.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
-
-}
-
-// Set front and back claws
-void setClaws() {
-
-  if (fClawSet) {
-    fClaw.open();
-  } else {
-    fClaw.close();
-  }
-
-  if (bClawSet) {
-    bClaw.open();
-  } else {
-    bClaw.close();
-  }
 
 }
 
@@ -172,42 +177,70 @@ void bc_flip() {
 }
  
 void elimpos2(){
-Intake(66.7);
-straight(120);
-straight(40,30);
-wait(0.25,sec);
-fc_flip(); //could be bc could be fc test to find out
-wait(0.25,sec);
-turn(-90); //adjust once first distence is set
-Lift(-1);
-straight(-50);
-straight(-40,30);
-wait(0.5,sec);
-bc_flip(); //play arround to test
-wait(0.5,sec);
-Lift(0);
-turn(90);
-straight(200);
+  fc_flip();
+  Intake(66.7);
+  bc_flip();
+  //only do next part if you have time to test
+  
+  // straight(-210,40);
+  leftD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  wait(1.0, sec);
+  bc_flip();
+  wait(0.2, sec);
+  leftD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  wait(2.0,sec);
+  stopDrive();
+// Intake(66.7);
+// straight(120);
+// straight(40,30);
+// wait(0.25,sec);
+// fc_flip(); //could be bc could be fc test to find out
+// wait(0.25,sec);
+// turn(-90); //adjust once first distence is set
+// Lift(-1);
+// straight(-50);
+// straight(-40,30);
+// wait(0.5,sec);
+// bc_flip(); //play arround to test
+// wait(0.5,sec);
+// Lift(0);
+// turn(90);
+// straight(200);
 
 
 }
 void elimpos1(){
-Intake(66.7);
-straight(120);
-straight(40,30);
-wait(0.25,sec);
-fc_flip(); //could be bc could be fc test to find out
-wait(0.25,sec);
-turn(90); //adjust once first distence is set
-Lift(-1);
-straight(-50);
-straight(-40,30);
-wait(0.5,sec);
-bc_flip(); //play arround to test
-wait(0.5,sec);
-Lift(0);
-turn(-90);
-straight(200);
+// Intake(66.7);
+// straight(120);
+// straight(40,30);
+// wait(0.25,sec);
+// fc_flip(); //could be bc could be fc test to find out
+// wait(0.25,sec);
+// turn(90); //adjust once first distence is set
+// Lift(-1);
+// straight(-50);
+// straight(-40,30);
+// wait(0.5,sec);
+// bc_flip(); //play arround to test
+// wait(0.5,sec);
+// Lift(0);
+// turn(-90);
+// straight(200);
+
+  leftD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  wait(0.8, sec);
+  leftD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  wait(0.5, sec);
+  bc_flip();
+  wait(0.2, sec);
+  leftD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  wait(2.0,sec);
+  stopDrive();
 
 //70 is arround 1 cube
 
@@ -216,17 +249,28 @@ void matchauton_pos1(){
   straight(-100,30);
   bc_flip(); //might be fc might be bc
   Intake(66.7);
+  wait(3, sec);
+  straight(120,30);
 
 }
 void matchauton_pos2(){
-  Intake(66.7);
-  wait(2,sec);
-  //only do next part if you have time to test
-  turn(-90);
-  straight(-210,30);
-  wait(1,sec);
   fc_flip();
-  wait(0.5,sec);
+  Intake(66.7);
+
+  wait(2,sec);
+  bc_flip();
+  //only do next part if you have time to test
+  turn(-80);
+  // straight(-210,40);
+  leftD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  wait(1.0, sec);
+  bc_flip();
+  wait(0.2, sec);
+  leftD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  wait(2.0,sec);
+  stopDrive();
   //IF and only If you really get to test it you can try and get two of the yellows, un comment the code as a starting point
   // Lift(-1);
   // turn(-90);
@@ -239,10 +283,12 @@ void matchauton_pos2(){
   
 
 
-  straight(150);
+  // straight(150);
 
 }
 void autonskills80pnts(){
+  // bc_flip();
+  // fc_flip();
   Intake(66.7); 
   Lift(33);
   wait(3,sec);
@@ -292,6 +338,8 @@ void autonskills80pnts(){
 
 
 void auton_sequence() {
+
+  
 
   // Drive backwards, grab red mogo, drive forwards
   Intake(0);  // Intake at speed 0/100
@@ -343,9 +391,10 @@ void autonomous(void) {
   // float kI = 0.2;
   // float kD = 1.5;
 
-  // // Default starting
-  // fClawSet = false;
-  // bClawSet = false;
+  // Default starting
+  fClawSet = false;
+  bClawSet = false;
+  setClaws();
   // Intake(100);
 
   // // lift.resetRotation();
@@ -365,10 +414,10 @@ void autonomous(void) {
   holdDrive();
  
   // Auton
-    autonskills80pnts();
+  //autonskills80pnts();
   //matchauton_pos1();
- // matchauton_pos2();
-  //elimpos1();
+  //matchauton_pos2();
+  elimpos1();
   //elimpos2()
   //auton_sequence();
   // turn(90);
