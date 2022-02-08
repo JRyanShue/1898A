@@ -211,6 +211,27 @@ void elimpos2(){
 
 
 }
+void matchside2test(){
+  Intake(66.7);
+  wait(2,sec);
+  turn(-71.5);
+
+ leftD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  wait(0.8, sec);
+  leftD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  wait(0.5, sec);
+  bc_flip();
+  wait(0.2, sec);
+  leftD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
+  wait(2.0,sec);
+  stopDrive();
+
+
+
+}
 void elimpos1(){
 // Intake(66.7);
 // straight(120);
@@ -251,6 +272,7 @@ void matchauton_pos1(){
   Intake(66.7);
   wait(3, sec);
   straight(120,30);
+  bc_flip();
 
 }
 void matchauton_pos2(){
@@ -313,7 +335,7 @@ void autonskills80pnts(){
   Lift(-1);
   straight(70,20);
   wait(1,sec);
-  bc_flip();
+  fc_flip();
   Lift(0);
   straight(-300);
   // fc_flip();
@@ -416,9 +438,10 @@ void autonomous(void) {
   // Auton
   //autonskills80pnts();
   //matchauton_pos1();
-  //matchauton_pos2();
+  //matchauton_pos2(); not it
   elimpos1();
-  //elimpos2()
+  //matchside2test();
+  //elimpos2() elimpos 2 is not it, elim pos 1 is
   //auton_sequence();
   // turn(90);
   // turn(-90);
