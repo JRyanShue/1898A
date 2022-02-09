@@ -175,6 +175,90 @@ void bc_flip() {
   setClaws();
 
 }
+
+void skills400(){
+Lift(-1);
+straight(-20,10);
+bc_flip();
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(22,20);
+
+leftD.spin(vex::directionType::rev, -30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -30, vex::velocityUnits::pct);
+wait(3.5,sec);
+fc_flip(); //grabs first yellow
+wait(1,sec);
+stopDrive();
+Lift(50);
+wait(2,sec);
+Lift(20);
+turn(36,20);
+straight(95,30);
+turn(-8);
+Lift(0);
+wait(1,sec);
+fc_flip(); //release first yellow
+turn(-2,10); //added since changed 201 to 8 instead of 10
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+Lift(20);
+wait(0.5,sec);
+Lift(0);
+stopDrive();
+straight(-30,30);
+Lift(-50);
+wait(2.01,sec);
+Lift(-1);
+bc_flip();
+turn(189);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+Lift(-1);
+wait(1,sec);
+fc_flip(); //grabs first blue
+Lift(0);
+wait(0.1,sec);
+stopDrive();
+turn(3,20);
+straight(-200,50);
+wait(0.5,sec);
+turn(65,30);
+Lift(100);
+wait(1.2,sec);
+Lift(1);
+
+straight(80,30);
+Lift(0);
+wait(0.5,sec);
+fc_flip(); //deposits first blue
+straight(-120);
+turn(8); //turns to get red
+Lift(-100);
+wait(0.75,sec);
+Lift(-1);
+straight(120,50);
+
+fc_flip();
+wait(0.25,sec); //grabs red
+straight(-70);
+
+straight(-100,40);
+bc_flip();
+straight(-50);
+bc_flip();
+turn(-90);
+
+
+
+
+
+
+
+}
  
 void elimpos2(){
   fc_flip();
@@ -395,6 +479,91 @@ void auton_sequence() {
 
 }
 
+void skillsv2() {
+Lift(-1);
+straight(-20,10);
+bc_flip();
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(22,20);
+
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+wait(2.625,sec);
+fc_flip(); //grabs first yellow
+wait(0.75,sec);
+stopDrive();
+Lift(50);
+wait(2,sec);
+Lift(20);
+turn(36,20);
+straight(95,30);
+turn(-8);
+Lift(0);
+wait(1,sec);
+fc_flip(); //release first yellow
+turn(-2,10); //added since changed 201 to 8 instead of 10
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+Lift(20);
+wait(0.5,sec);
+Lift(0);
+stopDrive();
+straight(-30,30);
+Lift(-50);
+wait(2.01,sec);
+Lift(-1);
+bc_flip();
+turn(189);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+Lift(0);
+wait(0.8,sec);
+fc_flip(); //grabs first blue
+Lift(0);
+wait(0.25,sec);
+stopDrive();
+turn(-10);
+straight(-70,20);
+turn(-75);
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+wait(1,sec);
+bc_flip(); //grabs red
+wait(0.25,sec);
+straight(200);
+Lift(100);
+wait(1.2,sec);
+Lift(1);
+turn(-70);
+Lift(0);
+wait(0.25,sec);
+fc_flip();
+wait(0.25,sec);
+straight(-100);
+
+
+
+
+}
+
+void stepbysteptest(){
+Lift(100);
+wait(1.2,sec);
+Lift(1);
+turn(-70);
+Lift(0);
+wait(0.25,sec);
+fc_flip();
+wait(0.25,sec);
+straight(100);
+
+
+
+}
 void holdDrive(void) {
 
   lF.setBrake(brakeType::hold);
@@ -439,7 +608,11 @@ void autonomous(void) {
   //autonskills80pnts();
   //matchauton_pos1();
   //matchauton_pos2(); not it
-  elimpos1();
+  //elimpos1();
+  //skills400();
+  skillsv2();
+  //stepbysteptest();
+  
   //matchside2test();
   //elimpos2() elimpos 2 is not it, elim pos 1 is
   //auton_sequence();
