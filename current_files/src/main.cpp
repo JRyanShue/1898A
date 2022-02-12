@@ -478,7 +478,95 @@ void auton_sequence() {
   
 
 }
+void skillsv3(){
+Intake(66.7);
+Lift(-1);
+straight(-20,10);
+bc_flip();
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(22,20);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+wait(2.625,sec);
+fc_flip(); //grabs first yellow
+wait(0.75,sec);
+stopDrive();
+Lift(50);
+wait(2,sec);
+Lift(20);
+turn(36,20);
+straight(95,30);
+turn(-8);
+Lift(0);
+wait(1,sec);
+fc_flip(); //release first yellow
+turn(-2,10); //added since changed 201 to 8 instead of 10
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+Lift(20);
+wait(0.5,sec);
+Lift(0);
+stopDrive();
+straight(-30,30);
+Lift(-50);
+wait(2.01,sec);
+Lift(-1);
+bc_flip();
+turn(189);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+Lift(0);
+wait(0.8,sec);
+fc_flip(); //grabs first blue
+Lift(0);
+wait(0.25,sec);
+stopDrive();
+turn(-10);
+straight(-79,20);//origianlly was 80
+turn(-70); //changed and adjusted
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+wait(0.75,sec);
+bc_flip(); //grabs red
+wait(0.25,sec);
+stopDrive();
+straight(180);
+Lift(100);
+wait(1.2,sec);
+Lift(1);
+turn(-70);
+straight(5,20);
+Lift(0);
+wait(0.25,sec);
+fc_flip();
+wait(0.25,sec); //released blue
+//done
+Intake(66.7);
+turn(90);
+straight(80,40);
+turn(95);
+//turn to yellow
+Lift(-90);
+wait(1.3,sec);
+Lift(-1);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+wait(1,sec);
+Lift(0);
+wait(0.25,sec);
+fc_flip();
+wait(2,sec);
+turn(90);
 
+
+
+
+
+}
 void skillsv2() {
 Lift(-1);
 straight(-20,10);
@@ -527,23 +615,139 @@ Lift(0);
 wait(0.25,sec);
 stopDrive();
 turn(-10);
-straight(-70,20);
-turn(-75);
+straight(-73,20);//origianlly was 80
+turn(-70); //changed and adjusted
 leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
 rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-wait(1,sec);
+wait(0.55,sec);
 bc_flip(); //grabs red
 wait(0.25,sec);
-straight(200);
+stopDrive();
+straight(180);
 Lift(100);
 wait(1.2,sec);
 Lift(1);
 turn(-70);
+straight(5,20);
 Lift(0);
 wait(0.25,sec);
 fc_flip();
+wait(0.25,sec); //released blue
+
+
+//done 
+Intake(66.7);
+straight(-50);
+//after is untested
+turn(60);
+Lift(50);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+wait(0.5,sec);
+Lift(1);
+wait(3,sec);
+stopDrive();
+//run into the wall
+wait(0.5,sec);
+
+// break
+
+straight(-60,40);
 wait(0.25,sec);
-straight(-100);
+turn(80,30);
+straight(250,40);
+wait(0.25,sec);
+straight(-50,30);
+wait(0.25,sec);
+turn(120,30);
+bc_flip();
+straight(230);
+
+
+
+
+
+}
+void skillsv4(){
+
+Lift(-1);
+straight(-20,10);
+bc_flip();
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(20,20);
+straight(5,20);
+turn(22,20);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+wait(2.625,sec);
+fc_flip(); //grabs first yellow
+wait(0.75,sec);
+stopDrive();
+Lift(50);
+wait(2,sec);
+Lift(20);
+turn(36,20);
+straight(95,30);
+turn(-8);
+Lift(0);
+wait(1,sec);
+fc_flip(); //release first yellow
+turn(-2,10); //added since changed 201 to 8 instead of 10
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+Lift(20);
+wait(0.5,sec);
+Lift(0);
+stopDrive();
+straight(-30,30);
+Lift(-50);
+wait(2.01,sec);
+Lift(-1);
+bc_flip();
+turn(189);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+Lift(0);
+wait(0.8,sec);
+fc_flip(); //grabs first blue
+Lift(0);
+wait(0.25,sec);
+stopDrive();
+turn(-10);
+straight(-79,20);//origianlly was 80
+turn(-70); //changed and adjusted
+leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+wait(0.75,sec);
+bc_flip(); //grabs red
+wait(0.25,sec);
+stopDrive();
+straight(180);
+Lift(100);
+wait(1.2,sec);
+Lift(1);
+turn(-70);
+straight(5,20);
+Lift(0);
+wait(0.25,sec);
+fc_flip();
+wait(0.25,sec); //released blue
+//done
+Intake(66.7);
+turn(95);
+leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+wait(4,sec);
+stopDrive();
+wait(0.25,sec);
+straight(100);
+turn(90);
+
+
+
+
 
 
 
@@ -551,15 +755,22 @@ straight(-100);
 }
 
 void stepbysteptest(){
-Lift(100);
-wait(1.2,sec);
-Lift(1);
-turn(-70);
-Lift(0);
+bc_flip();
 wait(0.25,sec);
-fc_flip();
+straight(-60);
 wait(0.25,sec);
-straight(100);
+turn(80,30);
+straight(250,40);
+wait(0.25,sec);
+straight(-50,30);
+wait(0.25,sec);
+turn(120,30);
+bc_flip();
+straight(230);
+
+
+
+
 
 
 
@@ -610,7 +821,11 @@ void autonomous(void) {
   //matchauton_pos2(); not it
   //elimpos1();
   //skills400();
+
+  //v2 is it
   skillsv2();
+  //skillsv4();
+  //skillsv3();
   //stepbysteptest();
   
   //matchside2test();
@@ -640,6 +855,10 @@ void usercontrol(void) {
 
   fClawSet = false;
   bClawSet = true;
+  
+  bool slowerDrive = false;
+  int yCoolDown = 0;
+  float driveMultiple = 1.0;
 
   // Must actuation button disabled for this amount of time after pressing
   // Makes it so that the piston doesn't shoot back and forth in the time of pressing the button
@@ -651,10 +870,18 @@ void usercontrol(void) {
     // Increment cooldowns
     fCoolDown += cycleTime;
 		bCoolDown += cycleTime;
+    yCoolDown += cycleTime;
     
     // Set tank drive
-    leftD.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
-    rightD.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
+    if (slowerDrive) {
+      Intake(500);
+      driveMultiple = 0.5;
+    } else {
+      Intake(-500);
+      driveMultiple = 1.0;
+    }
+    leftD.spin(vex::directionType::fwd, Controller1.Axis3.value() * driveMultiple, vex::velocityUnits::pct);
+    rightD.spin(vex::directionType::fwd, Controller1.Axis2.value() * driveMultiple, vex::velocityUnits::pct);
 
     // Intake
 
@@ -671,6 +898,14 @@ void usercontrol(void) {
 		if (Controller1.ButtonB.pressing()) {
 			Intake(-100);
 		}
+    if (Controller1.ButtonY.pressing() && yCoolDown > coolDownThreshold) {
+      slowerDrive = true;
+      yCoolDown = 0;
+    }
+    else if (Controller1.ButtonA.pressing() && yCoolDown > coolDownThreshold) {
+      slowerDrive = false;
+      yCoolDown = 0;
+    }
 
 		// Lift
 
