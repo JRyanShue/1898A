@@ -615,11 +615,12 @@ Lift(0);
 wait(0.25,sec);
 stopDrive();
 turn(-10);
-straight(-73,20);//origianlly was 80
+//straight(-73,20);//origianlly was 80
+straight(-68,20); //specifically for framingham 2-12-2022
 turn(-70); //changed and adjusted
 leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
 rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-wait(0.55,sec);
+wait(0.55,sec); //is 0.55 seconds, changed for framingham tournement
 bc_flip(); //grabs red
 wait(0.25,sec);
 stopDrive();
@@ -659,7 +660,7 @@ straight(250,40);
 wait(0.25,sec);
 straight(-50,30);
 wait(0.25,sec);
-turn(120,30);
+turn(110,30);
 bc_flip();
 straight(230);
 
