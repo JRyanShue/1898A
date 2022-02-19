@@ -90,32 +90,85 @@ void stopDrive() {
 // Straight drive movement
 void straight(float dist, float speed=50.0) {
 
+  // PID constants
+  float kP = 3.0;
+  float kI = 0.0;
+  float kD = 0.0;
+
+  float error = 0.0;
+  float integral = 0.0;
+  float derivative = 0.0;
+
+  float p;
+  float i;
+  float d;
+
+  float dT = 20.0;  // ms between update cycles
+
   // 50 units is one revolution
   float revs = (static_cast<float>(dist)) / 50.0;
 
+  // Initialize previous error
+  float prev_error = revs;
+
   bool reverse = dist < 0;
 
+  float current_pos;
+
   resetDrive();
-  
-  if (reverse) {
-    while (leftD.rotation(rotationUnits::rev) > revs || rightD.rotation(rotationUnits::rev) > revs) {
-      if (leftD.rotation(rotationUnits::rev) > revs) {
-        leftD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
-      }
-      if (rightD.rotation(rotationUnits::rev) > revs) {
-        rightD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
-      }
+
+  // Set left side voltage
+  // For now, assume forward
+  while (true) {
+
+    float time_elapsed = 0;
+
+    current_pos = leftD.rotation(rotationUnits::rev);  // current position
+
+    error = revs - current_pos;  // distance to target
+    if (error < 0.01 && time_elapsed > 2000) {  // End move if error is small enough
+      break;
     }
-  } else {
-    while (leftD.rotation(rotationUnits::rev) < revs || rightD.rotation(rotationUnits::rev) < revs) {
-      if (leftD.rotation(rotationUnits::rev) < revs) {
-        leftD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-      }
-      if (rightD.rotation(rotationUnits::rev) < revs) {
-        rightD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-      }
-    }
+    integral += error * dT;  // accumulated error over time to counteract lowering in error
+    derivative = (error - prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
+
+    // Three variables that factor into voltage setting
+    p = kP * error;
+    i = kI * integral;
+    d = kD * derivative;
+
+    // Set drive (both sides for now)
+    leftD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+    rightD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+
+    prev_error = error;
+
+    // Wait a constant delay
+    wait(dT, sec);
+    time_elapsed += dT;
+
   }
+  
+  
+  // if (reverse) {
+  //   while (leftD.rotation(rotationUnits::rev) > revs || rightD.rotation(rotationUnits::rev) > revs) {
+  //     if (leftD.rotation(rotationUnits::rev) > revs) {
+  //       leftD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+  //     }
+  //     if (rightD.rotation(rotationUnits::rev) > revs) {
+  //       rightD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+  //     }
+  //   }
+  // } else {
+  //   while (leftD.rotation(rotationUnits::rev) < revs || rightD.rotation(rotationUnits::rev) < revs) {
+  //     if (leftD.rotation(rotationUnits::rev) < revs) {
+  //       leftD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  //     }
+  //     if (rightD.rotation(rotationUnits::rev) < revs) {
+  //       rightD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  //     }
+  //   }
+  // }
 
   //
   stopDrive();
@@ -824,7 +877,8 @@ void autonomous(void) {
   //skills400();
 
   //v2 is it
-  skillsv2();
+  straight(300);
+  // skillsv2();
   //skillsv4();
   //skillsv3();
   //stepbysteptest();
