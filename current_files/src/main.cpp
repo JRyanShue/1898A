@@ -91,9 +91,9 @@ void stopDrive() {
 void straight(float dist, float speed=50.0) {
 
   // PID constants
-  float kP = 3.0;
-  float kI = 0.0;
-  float kD = 0.0;
+  float kP = 3.0; //until goes past then little back
+  float kI = 0.0; //add until no steady state error so you hit exact every time
+  float kD = 0.0; //increase until how far it is when it stops decreases 
 
   float error = 0.0;
   float integral = 0.0;
@@ -229,125 +229,9 @@ void bc_flip() {
 
 }
 
-void skills400(){
-Lift(-1);
-straight(-20,10);
-bc_flip();
-straight(5,20);
-turn(20,20);
-straight(5,20);
-turn(20,20);
-straight(5,20);
-turn(22,20);
 
-leftD.spin(vex::directionType::rev, -30, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -30, vex::velocityUnits::pct);
-wait(3.5,sec);
-fc_flip(); //grabs first yellow
-wait(1,sec);
-stopDrive();
-Lift(50);
-wait(2,sec);
-Lift(20);
-turn(36,20);
-straight(95,30);
-turn(-8);
-Lift(0);
-wait(1,sec);
-fc_flip(); //release first yellow
-turn(-2,10); //added since changed 201 to 8 instead of 10
-leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-Lift(20);
-wait(0.5,sec);
-Lift(0);
-stopDrive();
-straight(-30,30);
-Lift(-50);
-wait(2.01,sec);
-Lift(-1);
-bc_flip();
-turn(189);
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-Lift(-1);
-wait(1,sec);
-fc_flip(); //grabs first blue
-Lift(0);
-wait(0.1,sec);
-stopDrive();
-turn(3,20);
-straight(-200,50);
-wait(0.5,sec);
-turn(65,30);
-Lift(100);
-wait(1.2,sec);
-Lift(1);
-
-straight(80,30);
-Lift(0);
-wait(0.5,sec);
-fc_flip(); //deposits first blue
-straight(-120);
-turn(8); //turns to get red
-Lift(-100);
-wait(0.75,sec);
-Lift(-1);
-straight(120,50);
-
-fc_flip();
-wait(0.25,sec); //grabs red
-straight(-70);
-
-straight(-100,40);
-bc_flip();
-straight(-50);
-bc_flip();
-turn(-90);
-
-
-
-
-
-
-
-}
  
-void elimpos2(){
-  fc_flip();
-  Intake(66.7);
-  bc_flip();
-  //only do next part if you have time to test
-  
-  // straight(-210,40);
-  leftD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-  rightD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-  wait(1.0, sec);
-  bc_flip();
-  wait(0.2, sec);
-  leftD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
-  rightD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
-  wait(2.0,sec);
-  stopDrive();
-// Intake(66.7);
-// straight(120);
-// straight(40,30);
-// wait(0.25,sec);
-// fc_flip(); //could be bc could be fc test to find out
-// wait(0.25,sec);
-// turn(-90); //adjust once first distence is set
-// Lift(-1);
-// straight(-50);
-// straight(-40,30);
-// wait(0.5,sec);
-// bc_flip(); //play arround to test
-// wait(0.5,sec);
-// Lift(0);
-// turn(90);
-// straight(200);
 
-
-}
 void matchside2test(){
   Intake(66.7);
   wait(2,sec);
@@ -403,97 +287,9 @@ void elimpos1(){
 //70 is arround 1 cube
 
 }
-void matchauton_pos1(){
-  straight(-100,30);
-  bc_flip(); //might be fc might be bc
-  Intake(66.7);
-  wait(3, sec);
-  straight(120,30);
-  bc_flip();
-
-}
-void matchauton_pos2(){
-  fc_flip();
-  Intake(66.7);
-
-  wait(2,sec);
-  bc_flip();
-  //only do next part if you have time to test
-  turn(-80);
-  // straight(-210,40);
-  leftD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-  rightD.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-  wait(1.0, sec);
-  bc_flip();
-  wait(0.2, sec);
-  leftD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
-  rightD.spin(vex::directionType::fwd, 80, vex::velocityUnits::pct);
-  wait(2.0,sec);
-  stopDrive();
-  //IF and only If you really get to test it you can try and get two of the yellows, un comment the code as a starting point
-  // Lift(-1);
-  // turn(-90);
-  // straight(85,30);
-  // wait(0.5,sec);
-  // fc_flip(); //might be bc might be fc since its fucky, going to have to test to find out
-  // wait(0.5,sec);
-  //Lift(0);
-  // turn(90);
-  
 
 
-  // straight(150);
 
-}
-void autonskills80pnts(){
-  // bc_flip();
-  // fc_flip();
-  Intake(66.7); 
-  Lift(33);
-  wait(3,sec);
-  Lift(0);
-  wait(1,sec);
-  straight(300); 
-  turn(25);
-  straight(-250);
-  turn(-45);
-  straight(200);
-  turn(-100);
-  straight(200);
-  straight(-40);
-  turn(60);
-  straight(80,40.0); //into the wall
-  wait(1,sec);
-  turn(91);
-  wait(1,sec);
-  straight(80, 20.0);
-  Lift(-33);
-  wait(3,sec);
-  Lift(-1);
-  straight(70,20);
-  wait(1,sec);
-  fc_flip();
-  Lift(0);
-  straight(-300);
-  // fc_flip();
-  // turn(70);
-  // Lift(-1);
-  // straight(30,10);
-  // bc_flip();
-  // turn(-90);
-  // straight(300);
-  // straight(-50,10);
-
-
-  // bc_flip();
-  // straight(-50,30);
-  // wait(1,sec);
-  // turn(-90);
-  // straight(-10,10);
-  // bc_flip();
-
-
-}
 
 
 void auton_sequence() {
@@ -620,215 +416,10 @@ turn(90);
 
 
 }
-void skillsv2() {
-Lift(-1);
-straight(-20,10);
-bc_flip();
-straight(5,20);
-turn(20,20);
-straight(5,20);
-turn(20,20);
-straight(5,20);
-turn(22,20);
-
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-wait(2.625,sec);
-fc_flip(); //grabs first yellow
-wait(0.75,sec);
-stopDrive();
-Lift(50);
-wait(2,sec);
-Lift(20);
-turn(36,20);
-straight(95,30);
-turn(-8);
-Lift(0);
-wait(1,sec);
-fc_flip(); //release first yellow
-turn(-2,10); //added since changed 201 to 8 instead of 10
-leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-Lift(20);
-wait(0.5,sec);
-Lift(0);
-stopDrive();
-straight(-30,30);
-Lift(-50);
-wait(2.01,sec);
-Lift(-1);
-bc_flip();
-turn(189);
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-Lift(0);
-wait(0.8,sec);
-fc_flip(); //grabs first blue
-Lift(0);
-wait(0.25,sec);
-stopDrive();
-turn(-10);
-//straight(-73,20);//origianlly was 80
-straight(-68,20); //specifically for framingham 2-12-2022
-turn(-70); //changed and adjusted
-leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-wait(0.55,sec); //is 0.55 seconds, changed for framingham tournement
-bc_flip(); //grabs red
-wait(0.25,sec);
-stopDrive();
-straight(180);
-Lift(100);
-wait(1.2,sec);
-Lift(1);
-turn(-70);
-straight(5,20);
-Lift(0);
-wait(0.25,sec);
-fc_flip();
-wait(0.25,sec); //released blue
-
-
-//done 
-Intake(66.7);
-straight(-50);
-//after is untested
-turn(60);
-Lift(50);
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-wait(0.5,sec);
-Lift(1);
-wait(3,sec);
-stopDrive();
-//run into the wall
-wait(0.5,sec);
-
-// break
-
-straight(-60,40);
-wait(0.25,sec);
-turn(80,30);
-straight(250,40);
-wait(0.25,sec);
-straight(-50,30);
-wait(0.25,sec);
-turn(110,30);
-bc_flip();
-straight(230);
 
 
 
 
-
-}
-void skillsv4(){
-
-Lift(-1);
-straight(-20,10);
-bc_flip();
-straight(5,20);
-turn(20,20);
-straight(5,20);
-turn(20,20);
-straight(5,20);
-turn(22,20);
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-wait(2.625,sec);
-fc_flip(); //grabs first yellow
-wait(0.75,sec);
-stopDrive();
-Lift(50);
-wait(2,sec);
-Lift(20);
-turn(36,20);
-straight(95,30);
-turn(-8);
-Lift(0);
-wait(1,sec);
-fc_flip(); //release first yellow
-turn(-2,10); //added since changed 201 to 8 instead of 10
-leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-Lift(20);
-wait(0.5,sec);
-Lift(0);
-stopDrive();
-straight(-30,30);
-Lift(-50);
-wait(2.01,sec);
-Lift(-1);
-bc_flip();
-turn(189);
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-Lift(0);
-wait(0.8,sec);
-fc_flip(); //grabs first blue
-Lift(0);
-wait(0.25,sec);
-stopDrive();
-turn(-10);
-straight(-79,20);//origianlly was 80
-turn(-70); //changed and adjusted
-leftD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-wait(0.75,sec);
-bc_flip(); //grabs red
-wait(0.25,sec);
-stopDrive();
-straight(180);
-Lift(100);
-wait(1.2,sec);
-Lift(1);
-turn(-70);
-straight(5,20);
-Lift(0);
-wait(0.25,sec);
-fc_flip();
-wait(0.25,sec); //released blue
-//done
-Intake(66.7);
-turn(95);
-leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
-wait(4,sec);
-stopDrive();
-wait(0.25,sec);
-straight(100);
-turn(90);
-
-
-
-
-
-
-
-
-}
-
-void stepbysteptest(){
-bc_flip();
-wait(0.25,sec);
-straight(-60);
-wait(0.25,sec);
-turn(80,30);
-straight(250,40);
-wait(0.25,sec);
-straight(-50,30);
-wait(0.25,sec);
-turn(120,30);
-bc_flip();
-straight(230);
-
-
-
-
-
-
-
-}
 void holdDrive(void) {
 
   lF.setBrake(brakeType::hold);
@@ -877,7 +468,7 @@ void autonomous(void) {
   //skills400();
 
   //v2 is it
-  straight(300);
+  straight(100);
   // skillsv2();
   //skillsv4();
   //skillsv3();
