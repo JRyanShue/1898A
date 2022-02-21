@@ -126,10 +126,13 @@ void straight(float dist, float speed=50.0) {
     current_pos = leftD.rotation(rotationUnits::rev);  // current position
 
     error = revs - current_pos;  // distance to target
-    if (error < 0.01 && time_elapsed > 2000) {  // End move if error is small enough
+    if (error < 0.01 && time_elapsed > 3000) {  // End move if error is small enough
       break;
     }
     integral += error * dT;  // accumulated error over time to counteract lowering in error
+    if (error <= 0.0 || error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+      integral = 0.0;
+    }
     derivative = (error - prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
 
     // Three variables that factor into voltage setting
