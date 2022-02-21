@@ -91,7 +91,7 @@ void stopDrive() {
 void straight(float dist, float speed=50.0) {
 
   // PID constants
-  float kP = 3.0; //until goes past then little back
+  float kP = 2.1; //until goes past then little back
   float kI = 0.0; //add until no steady state error so you hit exact every time
   float kD = 0.0; //increase until how far it is when it stops decreases 
 
@@ -147,7 +147,7 @@ void straight(float dist, float speed=50.0) {
     prev_error = error;
 
     // Wait a constant delay
-    wait(dT, sec);
+    wait(dT, msec);
     time_elapsed += dT;
 
   }
