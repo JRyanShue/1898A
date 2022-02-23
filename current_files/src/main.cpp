@@ -1,6 +1,7 @@
 
 // Must include this to use vexcode API
 #include "vex.h"
+#include <cmath>
 
 using namespace vex;
 
@@ -87,64 +88,117 @@ void stopDrive() {
 
 }
 
+// void calculate_voltage(float *error, float prev_error, float *integral, float derivative, float kP, float kI, float kD, float dT, ) {
+
+//   // Calculate the output voltage of the PID controller
+//   integral += error * dT;  // accumulated error over time to counteract lowering in error
+//   if (error <= 0.0 || error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+//     integral = 0.0;
+//   }
+//   derivative = (error - prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
+
+//   // Three variables that factor into voltage setting
+//   p = kP * error;
+//   i = kI * integral;
+//   float d = kD * derivative;
+//   float voltage_percent = p + i + d;
+
+//   return voltage_percent, p, i, d;
+
+// }
+
 // Straight drive movement
-void straight(float dist, float speed=50.0) {
+void straight(float dist, float _time=1000.0) {
 
   // PID constants
-  float kP = 2.1; //until goes past then little back
-  float kI = 0.0; //add until no steady state error so you hit exact every time
-  float kD = 0.0; //increase until how far it is when it stops decreases 
+  float kP = 50.0; //until goes past then little back
+  float kI = 0.03; //add until no steady state error so you hit exact every time
+  float kD = 43.0; //increase until how far it is when it stops decreases 
 
-  float error = 0.0;
-  float integral = 0.0;
-  float derivative = 0.0;
+  float l_error = 0.0;
+  float r_error = 0.0;
+  float l_integral = 0.0;
+  float r_integral = 0.0;
+  float l_derivative = 0.0;
+  float r_derivative = 0.0;
 
   float p;
   float i;
   float d;
 
-  float dT = 20.0;  // ms between update cycles
+  float dT = 5.0;  // ms between update cycles
 
   // 50 units is one revolution
   float revs = (static_cast<float>(dist)) / 50.0;
 
   // Initialize previous error
-  float prev_error = revs;
+  float l_prev_error = revs;
+  float r_prev_error = revs;
 
   bool reverse = dist < 0;
 
   float current_pos;
+  float l_pos;
+  float r_pos;
 
   resetDrive();
+
+  float time_elapsed = 0;
 
   // Set left side voltage
   // For now, assume forward
   while (true) {
 
-    float time_elapsed = 0;
+    // current_pos = leftD.rotation(rotationUnits::rev);  // current position
+    l_pos = leftD.rotation(rotationUnits::rev);
+    r_pos = rightD.rotation(rotationUnits::rev);
 
-    current_pos = leftD.rotation(rotationUnits::rev);  // current position
-
-    error = revs - current_pos;  // distance to target
-    if (error < 0.01 && time_elapsed > 3000) {  // End move if error is small enough
+    float l_error = revs - l_pos;  // distance to target
+    float r_error = revs - r_pos;  // distance to target
+    if (reverse) {  // IF REVERSED
+      l_error = -l_error;
+      r_error = -r_error;
+    }
+    if (l_error < 0.1 && r_error < 0.1 && time_elapsed > _time) {  // End move if error is small enough
       break;
     }
-    integral += error * dT;  // accumulated error over time to counteract lowering in error
-    if (error <= 0.0 || error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
-      integral = 0.0;
+
+    l_integral += l_error * dT;  // accumulated error over time to counteract lowering in error
+    r_integral += r_error * dT;
+    if (l_error <= 0.0 || l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+      l_integral = 0.0;
     }
-    derivative = (error - prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
+    if (r_error <= 0.0 || r_error > 3.0) {
+      r_integral = 0.0;
+    }
+
+    l_derivative = (l_error - l_prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
+    r_derivative = (r_error - r_prev_error)/dT;
 
     // Three variables that factor into voltage setting
-    p = kP * error;
-    i = kI * integral;
-    d = kD * derivative;
+    p = kP * l_error;
+    i = kI * l_integral;
+    d = kD * l_derivative;
 
-    // Set drive (both sides for now)
-    leftD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
-    rightD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+    // Set drive
+    if (!reverse) {
+      leftD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+    } else {
+      leftD.spin(vex::directionType::rev, p + i + d, vex::velocityUnits::pct);
+    }
 
-    prev_error = error;
+    p = kP * r_error;
+    i = kI * r_integral;
+    d = kD * r_derivative;
+
+    if (!reverse) {
+      rightD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+    } else {
+      rightD.spin(vex::directionType::rev, p + i + d, vex::velocityUnits::pct);
+    }
+
+    l_prev_error = l_error;
+    r_prev_error = r_error;
 
     // Wait a constant delay
     wait(dT, msec);
@@ -180,37 +234,134 @@ void straight(float dist, float speed=50.0) {
 }
 
 // Turning drive movement (turn in place)
-void turn(float angle, float speed=50.0) {
+void turn(float angle, float _time=1000.0) {
 
-  // TUNE TURN AMOUNT: HIGHER VALUE IS SHORTER TURN
+  // PID constants
+  float kP = 60.0; //until goes past then little back
+  float kI = 0.075; //add until no steady state error so you hit exact every time
+  float kD = 70.0; //increase until how far it is when it stops decreases 
+
+  float l_error = 0.0;
+  float r_error = 0.0;
+  float l_integral = 0.0;
+  float r_integral = 0.0;
+  float l_derivative = 0.0;
+  float r_derivative = 0.0;
+
+  float p;
+  float i;
+  float d;
+
+  float dT = 5.0;  // ms between update cycles
+
+  // 50 units is one revolution
   float tuneVal = 145.0;
-
   float revs = (static_cast<float>(angle)) / tuneVal;
 
+  // Initialize previous error
+  float l_prev_error = revs;
+  float r_prev_error = revs;
+
   bool reverse = angle < 0;
-  // int error;
+
+  float l_pos;
+  float r_pos;
 
   resetDrive();
 
-  if (reverse) {
-    while (leftD.rotation(rotationUnits::rev) > revs || rightD.rotation(rotationUnits::rev) < -revs) {
-      if (leftD.rotation(rotationUnits::rev) > revs) {
-        leftD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
-      }
-      if (rightD.rotation(rotationUnits::rev) < -revs) {
-        rightD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-      }
+  float time_elapsed = 0;
+
+  // Set left side voltage
+  // For now, assume forward
+  while (true) {    
+
+    // current_pos = leftD.rotation(rotationUnits::rev);  // current position
+    l_pos = leftD.rotation(rotationUnits::rev);
+    r_pos = rightD.rotation(rotationUnits::rev); 
+
+    float l_error = revs - l_pos;  // distance to target
+    float r_error = - revs - r_pos;  // distance to target
+    if (!reverse) {  // DIRECTION-DEPENDENT
+      r_error = -r_error;
+    } else {
+      l_error = -l_error;
     }
-  } else {
-    while (leftD.rotation(rotationUnits::rev) < revs || rightD.rotation(rotationUnits::rev) > -revs) {
-      if (leftD.rotation(rotationUnits::rev) < revs) {
-        leftD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-      }
-      if (rightD.rotation(rotationUnits::rev) > -revs) {
-        rightD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
-      }
+    if (l_error < 0.05 && r_error < 0.05 && time_elapsed > _time) {  // End move if error is small enough
+      break;
     }
+
+    l_integral += l_error * dT;  // accumulated error over time to counteract lowering in error
+    r_integral += r_error * dT;
+    if (l_error <= 0.0 || l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+      l_integral = 0.0;
+    }
+    if (r_error <= 0.0 || r_error > 3.0) {
+      r_integral = 0.0;
+    }
+
+    l_derivative = (l_error - l_prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
+    r_derivative = (r_error - r_prev_error)/dT;
+
+    // Three variables that factor into voltage setting
+    p = kP * l_error;
+    i = kI * l_integral;
+    d = kD * l_derivative;
+
+    // Set drive
+    if (!reverse) {
+      leftD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+    } else {
+      leftD.spin(vex::directionType::rev, p + i + d, vex::velocityUnits::pct);
+    }
+    
+    p = kP * r_error;
+    i = kI * r_integral;
+    d = kD * r_derivative;
+
+    if (!reverse) {
+      rightD.spin(vex::directionType::rev, p + i + d, vex::velocityUnits::pct);
+    } else {
+      rightD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+    }
+
+    l_prev_error = l_error;
+    r_prev_error = r_error;
+
+    // Wait a constant delay
+    wait(dT, msec);
+    time_elapsed += dT;
+
   }
+
+  // // TUNE TURN AMOUNT: HIGHER VALUE IS SHORTER TURN
+  // float tuneVal = 145.0;
+
+  // float revs = (static_cast<float>(angle)) / tuneVal;
+
+  // bool reverse = angle < 0;
+  // // int error;
+
+  // resetDrive();
+
+  // if (reverse) {
+  //   while (leftD.rotation(rotationUnits::rev) > revs || rightD.rotation(rotationUnits::rev) < -revs) {
+  //     if (leftD.rotation(rotationUnits::rev) > revs) {
+  //       leftD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+  //     }
+  //     if (rightD.rotation(rotationUnits::rev) < -revs) {
+  //       rightD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  //     }
+  //   }
+  // } else {
+  //   while (leftD.rotation(rotationUnits::rev) < revs || rightD.rotation(rotationUnits::rev) > -revs) {
+  //     if (leftD.rotation(rotationUnits::rev) < revs) {
+  //       leftD.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  //     }
+  //     if (rightD.rotation(rotationUnits::rev) > -revs) {
+  //       rightD.spin(vex::directionType::rev, speed, vex::velocityUnits::pct);
+  //     }
+  //   }
+  // }
 
   //
   stopDrive();
@@ -471,7 +622,10 @@ void autonomous(void) {
   //skills400();
 
   //v2 is it
-  straight(100);
+  straight(100, 2000.0);
+  turn(90, 2000.0);
+  turn(-90, 2000.0);
+  straight(-100, 2000.0);
   // skillsv2();
   //skillsv4();
   //skillsv3();
