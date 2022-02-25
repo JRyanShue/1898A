@@ -145,6 +145,8 @@ void straight(float dist, float _time=1000.0) {
 
   float time_elapsed = 0;
 
+  float spinup_val = 0.1;
+
   // Set left side voltage
   // For now, assume forward
   while (true) {
@@ -165,12 +167,12 @@ void straight(float dist, float _time=1000.0) {
 
     l_integral += l_error * dT;  // accumulated error over time to counteract lowering in error
     r_integral += r_error * dT;
-    if (l_error <= 0.0 || l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
-      l_integral = 0.0;
-    }
-    if (r_error <= 0.0 || r_error > 3.0) {
-      r_integral = 0.0;
-    }
+    // if (l_error <= 0.0 || l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+    //   l_integral = 0.0;
+    // }
+    // if (r_error <= 0.0 || r_error > 3.0) {
+    //   r_integral = 0.0;
+    // }
 
     l_derivative = (l_error - l_prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
     r_derivative = (r_error - r_prev_error)/dT;
@@ -182,9 +184,9 @@ void straight(float dist, float _time=1000.0) {
 
     // Set drive
     if (!reverse) {
-      leftD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+      leftD.spin(vex::directionType::fwd, spinup_val * (p + i + d), vex::velocityUnits::pct);
     } else {
-      leftD.spin(vex::directionType::rev, p + i + d, vex::velocityUnits::pct);
+      leftD.spin(vex::directionType::rev, spinup_val * (p + i + d), vex::velocityUnits::pct);
     }
 
     p = kP * r_error;
@@ -192,9 +194,9 @@ void straight(float dist, float _time=1000.0) {
     d = kD * r_derivative;
 
     if (!reverse) {
-      rightD.spin(vex::directionType::fwd, p + i + d, vex::velocityUnits::pct);
+      rightD.spin(vex::directionType::fwd, spinup_val * (p + i + d), vex::velocityUnits::pct);
     } else {
-      rightD.spin(vex::directionType::rev, p + i + d, vex::velocityUnits::pct);
+      rightD.spin(vex::directionType::rev, spinup_val * (p + i + d), vex::velocityUnits::pct);
     }
 
     l_prev_error = l_error;
@@ -203,6 +205,11 @@ void straight(float dist, float _time=1000.0) {
     // Wait a constant delay
     wait(dT, msec);
     time_elapsed += dT;
+
+    // Spinup
+    if (spinup_val < 1.0) {
+      spinup_val += dT * 0.001;
+    }
 
   }
   
@@ -238,8 +245,8 @@ void turn(float angle, float _time=1000.0) {
 
   // PID constants
   float kP = 60.0; //until goes past then little back
-  float kI = 0.075; //add until no steady state error so you hit exact every time
-  float kD = 70.0; //increase until how far it is when it stops decreases 
+  float kI = 0.05; //add until no steady state error so you hit exact every time
+  float kD = 90.0; //increase until how far it is when it stops decreases 
 
   float l_error = 0.0;
   float r_error = 0.0;
@@ -292,12 +299,12 @@ void turn(float angle, float _time=1000.0) {
 
     l_integral += l_error * dT;  // accumulated error over time to counteract lowering in error
     r_integral += r_error * dT;
-    if (l_error <= 0.0 || l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
-      l_integral = 0.0;
-    }
-    if (r_error <= 0.0 || r_error > 3.0) {
-      r_integral = 0.0;
-    }
+    // if (l_error <= 0.0 || l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+    //   l_integral = 0.0;
+    // }
+    // if (r_error <= 0.0 || r_error > 3.0) {
+    //   r_integral = 0.0;
+    // }
 
     l_derivative = (l_error - l_prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
     r_derivative = (r_error - r_prev_error)/dT;
