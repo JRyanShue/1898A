@@ -578,7 +578,58 @@ turn(90);
 
 }
 
+void auton (void){
+  //grab the mogle 1 on ramp
+  straight(-20,500);
+  bc_flip();
+  straight(20,500);
+  turn(15,250);
+  straight(15,250);
+  turn(30,250);
+  straight(20,250);
+  turn(73,250);
+  //goes to yellow mogle( mogal 2)
+  straight(100,500);
+  leftD.spin(vex::directionType::rev, -20, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, -20, vex::velocityUnits::pct);
+  Lift(-1);
+  wait(1.0,sec);
+  Lift(0);
+  fc_flip();
+  //goes to drop off mogal goal
+  wait(0.5,sec);
+  stopDrive();
+  turn(17,250);
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  straight(110,1000);
+  wait(0.25,sec);
+  straight(55,1000);
+  wait(0.5,sec);
+  Lift(0);
+  wait(0.5,sec);
+  fc_flip();
+  straight(-75,250);
+  //releases and raises blue
+  bc_flip();
+  Lift(-100);
+  wait(1,sec);
+  Lift(-1);
+  straight(30,250);
+  turn(160);
+  straight(45,250);
+  fc_flip();
+  wait(0.5,sec);
+  turn(160);
 
+
+
+
+  
+  
+
+}
 
 
 void holdDrive(void) {
@@ -627,13 +678,13 @@ void autonomous(void) {
   //matchauton_pos2(); not it
   //elimpos1();
   //skills400();
-
+ auton();
   //v2 is it
-  straight(100, 2000.0);
-  turn(90, 2000.0);
-  turn(-90, 2000.0);
-  straight(-100, 2000.0);
-  // skillsv2();
+  // // straight(100, 2000.0);
+  // turn(90, 2000.0);
+  // turn(-90, 2000.0);
+  // straight(-100, 2000.0);
+  // // skillsv2();
   //skillsv4();
   //skillsv3();
   //stepbysteptest();
