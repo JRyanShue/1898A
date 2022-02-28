@@ -601,7 +601,7 @@ void auton (void){
   stopDrive();
   turn(17,250);
   Lift(100);
-  wait(1.5,sec);
+  wait(1.6,sec);
   Lift(1);
   straight(110,1000);
   wait(0.25,sec);
@@ -617,15 +617,26 @@ void auton (void){
   wait(1,sec);
   Lift(-1);
   straight(30,250);
-  turn(160);
+  turn(150);
   straight(45,250);
   fc_flip();
   wait(0.5,sec);
-  turn(160);
+  turn(195);
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  straight(100,500);
+  turn(-55,250);
+  straight(30,250);
+  Lift(0);
+  wait(0.5,sec);
+  fc_flip();
+  wait(0.5,sec);
+  straight(-50);
 
 
 
-
+ 
   
   
 
