@@ -621,18 +621,20 @@ void auton (void){
   straight(45,250);
   fc_flip();
   wait(0.5,sec);
-  turn(195);
-  Lift(100);
-  wait(1.5,sec);
-  Lift(1);
-  straight(100,500);
-  turn(-55,250);
-  straight(30,250);
-  Lift(0);
-  wait(0.5,sec);
-  fc_flip();
-  wait(0.5,sec);
-  straight(-50);
+  straight(-75,250);
+  turn(-110);
+  //turn(195);
+  // Lift(100);
+  // wait(1.5,sec);
+  // Lift(1);
+  // straight(100,500);
+  // turn(-45,250);
+  // straight(40,250);
+  // Lift(0);
+  // wait(0.5,sec);
+  // fc_flip();
+  // wait(0.5,sec);
+  //straight(-50);
 
 
 
@@ -641,8 +643,92 @@ void auton (void){
   
 
 }
+void elim1 (void){
+  leftD.spin(vex::directionType::rev, -90, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, -90, vex::velocityUnits::pct);
+  wait(1,sec);
+  fc_flip();
+  wait(0.1,sec);
+  stopDrive();
+  wait(0.25,sec);
+  Lift(100);
+  leftD.spin(vex::directionType::rev, 90, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 90, vex::velocityUnits::pct);
+  wait(1,sec);
+  wait(0.25,sec);
+  Lift(0);
+  stopDrive();
 
 
+
+}
+void qual1 (void){
+  Lift(20);
+  straight(-80,250);
+  bc_flip();
+  Lift(0);
+  wait(0.5,sec);
+  Intake(66.7);
+  straight(75,250);
+}
+void qual2 (void){
+  //grab the mogle 1 on ramp
+  straight(-20,500);
+  bc_flip();
+  Intake(30.7);
+  straight(20,500);
+  turn(15,250);
+  straight(15,250);
+  turn(30,250);
+  straight(20,250);
+  turn(73,250);
+  Intake(0);
+  //goes to yellow mogle( mogal 2)
+  Lift(-5);
+  straight(100,500);
+  Lift(0);
+  leftD.spin(vex::directionType::rev, -20, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, -20, vex::velocityUnits::pct);
+  Lift(-1);
+  wait(1.0,sec);
+  Lift(0);
+  fc_flip();
+  //goes to drop off mogal goal
+  wait(0.5,sec);
+  stopDrive();
+
+  straight(-100,250);
+  bc_flip();
+  straight(20,250);
+  
+
+}
+void qual3thereternoftheclawbot (void){
+  straight(-20,500);
+  bc_flip();
+  Intake(40.7);
+  wait(0.6,sec);
+  Intake(0);
+  bc_flip();
+  straight(50,250);
+  turn(90,250);
+  straight(75,250);
+  turn(-95,250);
+  leftD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  wait(4.,sec);
+  bc_flip();
+  wait(0.2,sec);
+  stopDrive();
+  wait(0.5,sec);
+  Intake(30);
+  wait(0.5,sec);
+  straight(100,250);
+  bc_flip();
+  straight(50,250);
+
+
+}
 void holdDrive(void) {
 
   lF.setBrake(brakeType::hold);
@@ -689,7 +775,22 @@ void autonomous(void) {
   //matchauton_pos2(); not it
   //elimpos1();
   //skills400();
- auton();
+
+//auton is the skills run
+//elim1 grabs a yellow, place as close as possible
+//qual 1 is line side
+//qual 2 is ramp side and gets yellow
+//qual 3 does both,
+//qual 2 and 3 are auton start spots
+
+ //auton();
+  //elim1();
+  //qual1();
+  //qual2();
+  qual3thereternoftheclawbot();
+
+
+
   //v2 is it
   // // straight(100, 2000.0);
   // turn(90, 2000.0);
