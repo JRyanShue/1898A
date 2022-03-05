@@ -173,6 +173,12 @@ void straight(float dist, float _time=1000.0) {
     // if (r_error <= 0.0 || r_error > 3.0) {
     //   r_integral = 0.0;
     // }
+    if (l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+      l_integral = 0.0;
+    }
+    if (r_error > 3.0) {
+      r_integral = 0.0;
+    }
 
     l_derivative = (l_error - l_prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
     r_derivative = (r_error - r_prev_error)/dT;
@@ -305,6 +311,12 @@ void turn(float angle, float _time=1000.0) {
     // if (r_error <= 0.0 || r_error > 3.0) {
     //   r_integral = 0.0;
     // }
+    if (l_error > 3.0) {  // Disable the integral from overaccumulation or factoring in after hitting the target
+      l_integral = 0.0;
+    }
+    if (r_error > 3.0) {
+      r_integral = 0.0;
+    }
 
     l_derivative = (l_error - l_prev_error)/dT;  // difference in error from last cycle to this -- this value is negative!
     r_derivative = (r_error - r_prev_error)/dT;
@@ -587,17 +599,16 @@ void auton (void){
   straight(15,250);
   turn(30,250);
   straight(20,250);
-  turn(73,250);
+  turn(71,250);
   //goes to yellow mogle( mogal 2)
   straight(100,500);
-  leftD.spin(vex::directionType::rev, -20, vex::velocityUnits::pct);
-  rightD.spin(vex::directionType::rev, -20, vex::velocityUnits::pct);
   Lift(-1);
-  wait(1.0,sec);
+  straight(50,250);
   Lift(0);
+  straight(15,250);
   fc_flip();
   //goes to drop off mogal goal
-  wait(0.5,sec);
+  wait(0.25,sec);
   stopDrive();
   turn(17,250);
   Lift(100);
@@ -643,6 +654,9 @@ void auton (void){
   
 
 }
+
+
+
 void elim1 (void){
   leftD.spin(vex::directionType::rev, -90, vex::velocityUnits::pct);
   rightD.spin(vex::directionType::rev, -90, vex::velocityUnits::pct);
@@ -664,12 +678,28 @@ void elim1 (void){
 }
 void qual1 (void){
   Lift(20);
-  straight(-80,250);
+  straight(-60,250);
+  straight(-35,250);
   bc_flip();
   Lift(0);
   wait(0.5,sec);
   Intake(66.7);
-  straight(75,250);
+  straight(50,250);
+  bc_flip();
+  Intake(0);
+  Lift(-20);
+  wait(0.5,sec);
+  straight(25,250);
+  turn(113);
+  Lift(0);
+  straight(105,250);
+  leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+  wait(1,sec);
+  fc_flip();
+  wait(0.3,sec);
+  straight(-120,250);
+  
 }
 void qual2 (void){
   //grab the mogle 1 on ramp
@@ -697,7 +727,7 @@ void qual2 (void){
   wait(0.5,sec);
   stopDrive();
 
-  straight(-100,250);
+  straight(-110,250);
   bc_flip();
   straight(20,250);
   
@@ -706,27 +736,257 @@ void qual2 (void){
 void qual3thereternoftheclawbot (void){
   straight(-20,500);
   bc_flip();
-  Intake(40.7);
+  Intake(30.7);
   wait(0.6,sec);
   Intake(0);
   bc_flip();
   straight(50,250);
   turn(90,250);
   straight(75,250);
-  turn(-95,250);
-  leftD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
-  rightD.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
-  wait(4.,sec);
+  turn(-93,250);
+  straight(-330,250);
   bc_flip();
   wait(0.2,sec);
   stopDrive();
-  wait(0.5,sec);
-  Intake(30);
-  wait(0.5,sec);
+  wait(0.4,sec);
+  Intake(15);
+  wait(1,sec);
   straight(100,250);
   bc_flip();
   straight(50,250);
 
+
+}
+void auton2 (void){
+  //grab the mogle 1 on ramp
+  straight(-20,500);
+  bc_flip();
+  straight(20,500);
+  turn(15,250);
+  straight(15,250);
+  turn(30,250);
+  straight(20,250);
+  turn(71,250);
+  //goes to yellow mogle( mogal 2)
+  straight(110,500); //was 130
+  Lift(-1);
+  straight(20,250);
+  Lift(0);
+  straight(35,250); //was 35
+  fc_flip();
+  turn(22,250);
+ //lifts up mogle
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  straight(120,250);
+  straight(30,250);
+  Lift(0);
+  wait(0.5,sec);
+  fc_flip();
+  wait(0.5,sec);
+  //just released yellow
+  straight(-50,250);
+  //changes starting mogle arm
+  bc_flip();
+  Lift(-100);
+  wait(1,sec);
+  Lift(-1);
+  straight(30,250);
+  turn(150);
+  straight(45,250);
+  fc_flip();
+  wait(0.5,sec);
+  straight(-60,250);
+  turn(-111);
+  //turn to other side mogle
+  straight(-85,250);
+  straight(-26,250);
+  bc_flip();
+  //just grabbed red
+  wait(0.25,sec);
+  straight(190,500);
+  Lift(100);
+  wait(1.4,sec);
+  Lift(1);
+  turn(-110,250);
+  straight(30,250);
+  Lift(0);
+  wait(0.25,sec);
+  fc_flip();
+  wait(0.25,sec);
+  straight(-40,250);
+  
+  Lift(35);
+  //goes to get yellowbellowchochellomywello
+  turn(93,250);
+  Lift(0);
+  //wall time
+  Intake(66.7);
+  leftD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+  rightD.spin(vex::directionType::rev, -40, vex::velocityUnits::pct);
+  wait(3.5,sec);
+  stopDrive();
+  Intake(0);
+  Lift(-35);
+  straight(-90);
+  turn(93,250);
+  Lift(0);
+  straight(100,250);
+  straight(30,250);
+  fc_flip();
+
+//grabs yellow
+  turn(47,250);
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  straight(105,250);
+  turn(-50,250);
+  
+  Lift(0);
+  straight(20);
+  wait(0.25,sec);
+  fc_flip();
+  wait(0.25,sec);
+  //puts down yellow, bellow flips
+  straight(-50,250);
+  bc_flip();
+  Lift(-100);
+  wait(1,sec);
+  Lift(-1);
+  straight(30,250);
+  turn(150);
+  straight(45,250);
+  fc_flip();
+  wait(0.5,sec);
+  straight(-60,250);
+
+  //should grab yellow
+  
+
+  
+
+}
+void auton3 (void){
+  //grab the mogle 1 on ramp
+  straight(-20,500);
+  bc_flip();
+  straight(20,500);
+  turn(15,250);
+  straight(15,250);
+  turn(30,250);
+  straight(20,250);
+  turn(71,250);
+  //goes to yellow mogle( mogal 2)
+  straight(110,500); //was 130
+  Lift(-1);
+  straight(20,250);
+  Lift(0);
+  straight(35,250); //was 35
+  fc_flip();
+  turn(22,250);
+ //lifts up mogle
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  straight(120,250);
+  straight(30,250);
+  Lift(0);
+  wait(0.5,sec);
+  fc_flip();
+  wait(0.5,sec);
+  //just released yellow
+  straight(-50,250);
+  //changes starting mogle arm
+  bc_flip();
+  Lift(-100);
+  wait(1,sec);
+  Lift(-1);
+  straight(30,250);
+  turn(150);
+  straight(45,250);
+  fc_flip();
+  wait(0.5,sec);
+  straight(-60,250);
+  turn(-111);
+  //turn to other side mogle
+  straight(-85,250);
+  straight(-26,250);
+  bc_flip();
+  //just grabbed red
+  wait(0.25,sec);
+  straight(190,500);
+  Lift(100);
+  wait(1.4,sec);
+  Lift(1);
+  turn(-110,250);
+  straight(30,250);
+  Lift(0);
+  wait(0.25,sec);
+  fc_flip();
+  wait(0.25,sec);
+  straight(-40,250);
+  turn(160);
+  Intake(66.7);
+  //goes past yellow
+  straight(75,250);
+  straight(75,250);
+  Lift(-100);
+  Intake(0);
+  turn(-80,250);
+  straight(55,250);
+  Lift(-1);
+  turn(-100,250);
+  straight(40,250);
+  straight(20,250);
+  fc_flip();
+  //grabs it
+  Lift(0);
+  wait(0.25,sec);
+  straight(-100,250);
+  turn(-90,250);
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  straight(75,250);
+  turn(-90,250);
+  straight(10,250);
+  Lift(0);
+  wait(0.25,sec);
+  //put down mogal
+  fc_flip();
+  wait(0.25,sec);
+  straight(-50,250);
+   bc_flip();
+  Lift(-100);
+  wait(1,sec);
+  Lift(-1);
+  straight(30,250);
+  turn(150);
+  straight(45,250);
+  fc_flip();
+  wait(0.5,sec);
+  straight(-60,250);
+  turn(-111);
+  Lift(100);
+  wait(1.5,sec);
+  Lift(1);
+  turn(-80);
+  Lift(0);
+  wait(0.25,sec);
+  fc_flip();
+  wait(0.25,sec);
+  straight(-40);
+}
+void test (void){
+  turn(160);
+
+  
+  
+  
+
+  
 
 }
 void holdDrive(void) {
@@ -783,11 +1043,14 @@ void autonomous(void) {
 //qual 3 does both,
 //qual 2 and 3 are auton start spots
 
+auton3();
+//auton2();
  //auton();
   //elim1();
-  //qual1();
+   //qual1();
   //qual2();
-  qual3thereternoftheclawbot();
+  //qual3thereternoftheclawbot();
+  //test();
 
 
 
